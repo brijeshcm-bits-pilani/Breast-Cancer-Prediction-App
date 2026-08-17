@@ -1,7 +1,7 @@
 """
 Onco-Signal Lab -- Breast Mass Diagnostic Assistant
 ====================================================
-A Streamlit front-end for comparing six classifiers trained on the
+A Streamlit front-end for comparing five classifiers trained on the
 Wisconsin Diagnostic Breast Cancer (WDBC) tumor-signal dataset.
 
 Upload the held-out `test_data.csv`, pick a model from the sidebar, and
@@ -68,7 +68,7 @@ def load_model_bundle():
     if not os.path.exists(MODEL_BUNDLE_PATH):
         st.error(
             "model/model_bundle.joblib not found. Run `python model/train.py` "
-            "first to fetch the data and train all six models."
+            "first to fetch the data and train all five models."
         )
         st.stop()
     return joblib.load(MODEL_BUNDLE_PATH)
@@ -79,7 +79,7 @@ def render_hero():
         """
         <div class="os-hero">
             <h1>Onco-Signal Lab</h1>
-            <p>A side-by-side diagnostic assistant benchmarking six classifiers on
+            <p>A side-by-side diagnostic assistant benchmarking five classifiers on
             fine-needle-aspirate tumor measurements (WDBC dataset).</p>
         </div>
         """,
@@ -192,7 +192,7 @@ def main():
         preview["malignant_probability"] = np.round(y_score, 3)
         st.dataframe(preview, use_container_width=True)
 
-    with st.expander("Compare all six models on this upload"):
+    with st.expander("Compare all five models on this upload"):
         rows = []
         for label, m in models.items():
             p = m.predict(X_scaled)
