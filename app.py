@@ -5,7 +5,7 @@ A Streamlit front-end for comparing five classifiers trained on the
 Wisconsin Diagnostic Breast Cancer (WDBC) tumor-signal dataset.
 
 Upload the held-out `test_data.csv`, pick a model from the sidebar, and
-the app scores that model on your uploaded rows live -- accuracy, AUC,
+the app scores that model on the uploaded rows live -- accuracy, AUC,
 precision, recall, F1, MCC, plus a confusion matrix and full
 classification report.
 
