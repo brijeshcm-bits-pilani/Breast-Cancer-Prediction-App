@@ -8,7 +8,7 @@ smoothness, compactness, concavity, concave points, symmetry, and fractal
 dimension. This project treats those measurements as a **binary
 classification problem**: given the ten mean/standard-error/worst-case
 measurements per sample (30 features total), predict whether the underlying
-mass is **malignant** or **benign**. Six classical/ensemble classifiers are
+mass is **malignant** or **benign**. Five classical/ensemble classifiers are
 trained on the same split of the same dataset so their diagnostic performance
 can be compared head-to-head, and the best-performing model is surfaced
 through an interactive Streamlit app.
@@ -29,7 +29,7 @@ through an interactive Streamlit app.
 
 ## d. Models Used
 
-All six models are trained on identically scaled (`StandardScaler`) versions of the same 80/20 split. Full training code: `model/train.py`.
+All five models are trained on identically scaled (`StandardScaler`) versions of the same 80/20 split. Full training code: `model/train.py`.
 
 | ML Model Name | Accuracy | AUC | Precision | Recall | F1 | MCC |
 |---|---|---|---|---|---|---|
@@ -45,11 +45,11 @@ All six models are trained on identically scaled (`StandardScaler`) versions of 
 | ML Model Name | Observation about model performance |
 |---|---|
 | Logistic Regression | this is the best performing model on every metric, perfect precision, best recall, best F1, best MCC. With this train/test split (`random_state=1974`) the classes separate almost linearly once features are standardized, and the linear decision boundary generalizes better than any of the more flexible models below. |
-| Decision Tree | Weakest of the six by a clear margin. A single tree overfits the training split's specific structure, lowest accuracy, AUC, and MCC of the group; recall (0.833) shows it misses more malignant cases than any other model. |
+| Decision Tree | Weakest of the five by a clear margin. A single tree overfits the training split's specific structure, lowest accuracy, AUC, and MCC of the group; recall (0.833) shows it misses more malignant cases than any other model. |
 | kNN | Very strong, perfect precision and second-best F1/MCC, once features are scaled (distance-based, so scaling matters a lot here). Recall trails Logistic Regression slightly: a few malignant cases still sit close to benign neighbors in feature space. |
 | Naive Bayes | Middle of the pack. High AUC (0.988) shows good probability *ranking*, but the independence assumption caps precision/recall below the top three models, real tumor features are correlated, which Gaussian NB can't model. |
 | Random Forest (Ensemble) | Tuned via 5-fold CV grid search over `n_estimators` (250–350) and `max_depth` (5–8); `n_estimators=320, max_depth=8` won on CV AUC. Ties Naive Bayes on this particular test split, averaging 320 decorrelated trees controls the single Decision Tree's over-fitting, but doesn't beat the linear model here. |
-| **Overall Winner for your dataset?** | **Logistic Regression**, clearly, best score on all six metrics simultaneously, and it's the most interpretable model of the six (coefficients map directly to feature effects). |
+| **Overall Winner for your dataset?** | **Logistic Regression**, clearly, best score on all five metrics simultaneously, and it's the most interpretable model of the five (coefficients map directly to feature effects). |
 
 ## Repository Structure
 
@@ -77,5 +77,5 @@ streamlit run app.py               # launches the diagnostic assistant
 
 In the running app: upload `test_data.csv` from the sidebar, pick a model
 from the dropdown, and view live accuracy/AUC/precision/recall/F1/MCC, a
-confusion matrix, a full classification report, and a six-way model
+confusion matrix, a full classification report, and a five-way model
 comparison table — all computed on your uploaded rows.
