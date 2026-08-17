@@ -17,7 +17,7 @@ through an interactive Streamlit app.
 
 - **Source**: [Breast Cancer Wisconsin (Diagnostic) Data Set](https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic), UCI Machine Learning Repository (donated 1995).
 - **Instances**: 569 (357 benign, 212 malignant) — exceeds the 500-instance minimum.
-- **Features**: 30 real-valued numeric features (10 base measurements × mean, standard error, worst) — exceeds the 12-feature minimum.
+- **Features**: 30 real-valued numeric features (10 base measurements × mean, standard error, worst), exceeds the 12-feature minimum.
 - **Target**: Diagnosis — `M` (malignant, encoded 1) / `B` (benign, encoded 0).
 - **Access method**: `model/train.py` fetches the dataset live via the official `ucimlrepo` client (`fetch_ucirepo(id=17)`) **only if no local cache exists yet** — the first run writes `model/wdbc_raw_cache.csv`, and every subsequent run reads that cache instead of hitting the network again. If no outbound connection to the UCI archive is available on the first run, it automatically falls back to scikit-learn's bundled copy of the identical WDBC records so the pipeline never breaks in a restricted network. Delete `model/wdbc_raw_cache.csv` to force a fresh fetch.
 - **Split**: stratified 80/20 train/test split, `random_state=1974`. The 20% test split (114 rows) is exported as `test_data.csv` and is the file the Streamlit app expects to be uploaded.
@@ -45,7 +45,7 @@ All six models are trained on identically scaled (`StandardScaler`) versions of 
 | ML Model Name | Observation about model performance |
 |---|---|
 | Logistic Regression | Outright winner on every metric — perfect precision, best recall, best F1, best MCC. With this train/test split (`random_state=1974`) the classes separate almost linearly once features are standardized, and the linear decision boundary generalizes better than any of the more flexible models below. |
-| Decision Tree | Weakest of the six by a clear margin. A single tree overfits the training split's specific structure — lowest accuracy, AUC, and MCC of the group; recall (0.833) shows it misses more malignant cases than any other model. |
+| Decision Tree | Weakest of the six by a clear margin. A single tree overfits the training split's specific structure, lowest accuracy, AUC, and MCC of the group; recall (0.833) shows it misses more malignant cases than any other model. |
 | kNN | Very strong — perfect precision and second-best F1/MCC, once features are scaled (distance-based, so scaling matters a lot here). Recall trails Logistic Regression slightly: a few malignant cases still sit close to benign neighbors in feature space. |
 | Naive Bayes | Middle of the pack. High AUC (0.988) shows good probability *ranking*, but the independence assumption caps precision/recall below the top three models — real tumor features are correlated, which Gaussian NB can't model. |
 | Random Forest (Ensemble) | Tuned via 5-fold CV grid search over `n_estimators` (250–350) and `max_depth` (5–8); `n_estimators=320, max_depth=8` won on CV AUC. Ties Naive Bayes on this particular test split — averaging 320 decorrelated trees controls the single Decision Tree's overfitting, but doesn't beat the linear model here. |
