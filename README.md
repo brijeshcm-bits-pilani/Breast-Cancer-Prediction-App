@@ -44,12 +44,12 @@ All six models are trained on identically scaled (`StandardScaler`) versions of 
 
 | ML Model Name | Observation about model performance |
 |---|---|
-| Logistic Regression | Outright winner on every metric — perfect precision, best recall, best F1, best MCC. With this train/test split (`random_state=1974`) the classes separate almost linearly once features are standardized, and the linear decision boundary generalizes better than any of the more flexible models below. |
+| Logistic Regression | this is the best performing model on every metric, perfect precision, best recall, best F1, best MCC. With this train/test split (`random_state=1974`) the classes separate almost linearly once features are standardized, and the linear decision boundary generalizes better than any of the more flexible models below. |
 | Decision Tree | Weakest of the six by a clear margin. A single tree overfits the training split's specific structure, lowest accuracy, AUC, and MCC of the group; recall (0.833) shows it misses more malignant cases than any other model. |
-| kNN | Very strong — perfect precision and second-best F1/MCC, once features are scaled (distance-based, so scaling matters a lot here). Recall trails Logistic Regression slightly: a few malignant cases still sit close to benign neighbors in feature space. |
-| Naive Bayes | Middle of the pack. High AUC (0.988) shows good probability *ranking*, but the independence assumption caps precision/recall below the top three models — real tumor features are correlated, which Gaussian NB can't model. |
-| Random Forest (Ensemble) | Tuned via 5-fold CV grid search over `n_estimators` (250–350) and `max_depth` (5–8); `n_estimators=320, max_depth=8` won on CV AUC. Ties Naive Bayes on this particular test split — averaging 320 decorrelated trees controls the single Decision Tree's overfitting, but doesn't beat the linear model here. |
-| **Overall Winner for your dataset?** | **Logistic Regression**, clearly — best score on all six metrics simultaneously, and it's the most interpretable model of the six (coefficients map directly to feature effects). |
+| kNN | Very strong, perfect precision and second-best F1/MCC, once features are scaled (distance-based, so scaling matters a lot here). Recall trails Logistic Regression slightly: a few malignant cases still sit close to benign neighbors in feature space. |
+| Naive Bayes | Middle of the pack. High AUC (0.988) shows good probability *ranking*, but the independence assumption caps precision/recall below the top three models, real tumor features are correlated, which Gaussian NB can't model. |
+| Random Forest (Ensemble) | Tuned via 5-fold CV grid search over `n_estimators` (250–350) and `max_depth` (5–8); `n_estimators=320, max_depth=8` won on CV AUC. Ties Naive Bayes on this particular test split, averaging 320 decorrelated trees controls the single Decision Tree's over-fitting, but doesn't beat the linear model here. |
+| **Overall Winner for your dataset?** | **Logistic Regression**, clearly, best score on all six metrics simultaneously, and it's the most interpretable model of the six (coefficients map directly to feature effects). |
 
 ## Repository Structure
 
